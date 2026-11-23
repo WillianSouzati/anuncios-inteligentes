@@ -28,3 +28,6 @@ use the editor.
   own key and store it in Secrets.
 - **Secrets.** Lovable manages them. Do not put secret values in the repo.
 <!-- LOVABLE:END -->
+
+## Project rules
+- Ad generation goes through the `generateAd` contract in `src/lib/ads/`; currently a labeled demo, later to be swapped for a server function calling Gemini so keys stay server-side.
