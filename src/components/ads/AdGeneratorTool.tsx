@@ -2,7 +2,7 @@ import { useState, type FormEvent } from "react";
 import { AlertCircle, Loader2, Sparkles, WandSparkles } from "lucide-react";
 import type { AdResult, ProductInput } from "@/lib/ads/types";
 import { productSchema, type FieldErrors } from "@/lib/ads/validation";
-import { generateAd } from "@/lib/ads/demo-generator";
+import { aiGenerator } from "@/lib/ads/ai-generator";
 import { AdResultView } from "./AdResultView";
 
 const empty: ProductInput = { nome: "", categoria: "", marca: "", modelo: "", estado: "", preco: "", caracteristicas: "", detalhes: "" };
@@ -33,10 +33,10 @@ export function AdGeneratorTool() {
     }
     setLoading(true); setError(null);
     try {
-      setResult(await generateAd(parsed.data));
+      setResult(await aiGenerator(parsed.data));
       setTimeout(() => document.getElementById("resultado")?.scrollIntoView({ behavior: "smooth" }), 50);
-    } catch {
-      setError("Não foi possível gerar o anúncio agora. Tente novamente em instantes.");
+    } catch (e) {
+      setError(e instanceof Error && e.message ? e.message : "Não foi possível gerar o anúncio agora. Tente novamente em instantes.");
     } finally { setLoading(false); }
   }
 
@@ -69,7 +69,7 @@ export function AdGeneratorTool() {
         <button type="submit" disabled={loading} className="inline-flex w-full items-center justify-center gap-2 rounded-md bg-gradient-brand px-4 py-3 text-sm font-semibold text-primary-foreground shadow-soft transition hover:opacity-95 disabled:opacity-60">
           {loading ? <Loader2 className="size-4 animate-spin" /> : <Sparkles className="size-4" />}{loading ? "Gerando anúncio..." : "Gerar meu anúncio"}
         </button>
-        <p className="text-center text-xs text-muted-foreground">Versão de demonstração: os resultados são fictícios.</p>
+        <p className="text-center text-xs text-muted-foreground">Os resultados são gerados por inteligência artificial (Google Gemini).</p>
       </form>
       <div id="resultado" className="scroll-mt-20">
         {error && <div className="mb-4 flex gap-2 rounded-lg border border-destructive/40 bg-destructive/10 p-3 text-sm text-destructive"><AlertCircle className="size-4 shrink-0" />{error}</div>}
