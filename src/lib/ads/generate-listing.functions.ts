@@ -61,7 +61,7 @@ function buildPrompt(p: {
  * A chave GEMINI_API_KEY é lida de process.env dentro do handler e nunca chega ao navegador.
  */
 export const generateListing = createServerFn({ method: "POST" })
-  .inputValidator((input: unknown) => productSchema.parse(input))
+  .validator((input: unknown) => productSchema.parse(input))
   .handler(async ({ data }): Promise<GenerateListingResult> => {
     const apiKey = process.env["GEMINI_API_KEY"];
     if (!apiKey) {
@@ -72,7 +72,7 @@ export const generateListing = createServerFn({ method: "POST" })
     let geminiRes: Response;
     try {
       geminiRes = await fetch(
-        "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent",
+          "https://generativelanguage.googleapis.com/v1beta/models/gemini-3.8-flash:generateContent",
         {
           method: "POST",
           redirect: "manual",
