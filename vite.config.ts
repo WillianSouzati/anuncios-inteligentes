@@ -15,4 +15,8 @@ export default defineConfig({
     // nitro/vite builds from this
     server: { entry: "server" },
   },
+  vite: {
+    // Pre-bundle up front so a mid-session re-optimization does not load two copies of React.
+    optimizeDeps: { include: ["lucide-react", "sonner", "zod"] },
+  },
 });
