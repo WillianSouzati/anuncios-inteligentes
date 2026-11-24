@@ -1,4 +1,4 @@
-import { Info, Lightbulb, RefreshCw } from "lucide-react";
+import { Lightbulb, RefreshCw } from "lucide-react";
 import type { ReactNode } from "react";
 import type { AdResult } from "@/lib/ads/types";
 import { CopyButton } from "./CopyButton";
@@ -18,12 +18,6 @@ function Section({ title, copy, children }: { title: string; copy: string; child
 export function AdResultView({ result, onRegenerate, loading }: { result: AdResult; onRegenerate: () => void; loading: boolean }) {
   return (
     <div className="space-y-4">
-      {result.demonstracao && (
-        <div className="flex gap-2 rounded-lg border border-warning/40 bg-warning/10 p-3 text-sm text-foreground">
-          <Info className="mt-0.5 size-4 shrink-0 text-warning" />
-          <p><strong>Modo demonstração:</strong> estes são dados fictícios gerados localmente. Ainda não há integração com inteligência artificial.</p>
-        </div>
-      )}
       <div className="flex items-center justify-between">
         <h2 className="text-xl font-semibold">Seu anúncio</h2>
         <button type="button" onClick={onRegenerate} disabled={loading} className="inline-flex items-center gap-2 rounded-md border px-3 py-2 text-sm font-medium hover:bg-accent disabled:opacity-50">

@@ -124,7 +124,6 @@ export const generateListing = createServerFn({ method: "POST" })
           descricao: String(ad.descricao ?? ""),
           caracteristicas: Array.isArray(ad.caracteristicas) ? ad.caracteristicas.map(String) : [],
           sugestoes: Array.isArray(ad.sugestoes) ? ad.sugestoes.map(String) : [],
-          demonstracao: false,
         },
       };
     } catch (e) {

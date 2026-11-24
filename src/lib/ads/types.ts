@@ -14,8 +14,7 @@ export type AdResult = {
   descricao: string;
   caracteristicas: string[];
   sugestoes: string[];
-  demonstracao: boolean;
 };
 
-/** Contrato do gerador. A versão futura chamará um backend seguro (Gemini) sem expor chaves no navegador. */
+/** Contrato do gerador. A implementação real chama o backend seguro (Gemini) sem expor chaves no navegador. */
 export type AdGenerator = (input: ProductInput) => Promise<AdResult>;
