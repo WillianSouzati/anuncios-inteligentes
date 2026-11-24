@@ -2,7 +2,6 @@
 
 Uma aplicação web chamada IA para Anúncios Inteligentes, totalmente em português do Brasil, com aparência profissional de um produto SaaS moderno. O objetivo é ajudar vendedores a criarem anúncios melhores para marketplaces usando inteligência artificial.
 
-
 Prefer working locally? You need Node.js and npm — [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating).
 
 ```sh
