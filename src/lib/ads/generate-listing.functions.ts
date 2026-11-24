@@ -69,33 +69,42 @@ export const generateListing = createServerFn({ method: "POST" })
       return { ok: false, erro: "O serviço de IA ainda não está configurado." };
     }
 
-    let geminiRes: Response;
-    try {
-      geminiRes = await fetch(
-          "https://generativelanguage.googleapis.com/v1beta/models/gemini-3.8-flash:generateContent",
-        {
-          method: "POST",
-          redirect: "manual",
-          headers: { "Content-Type": "application/json", "x-goog-api-key": apiKey },
-          body: JSON.stringify({
-            contents: [{ parts: [{ text: buildPrompt(data) }] }],
-            generationConfig: {
-              responseMimeType: "application/json",
-              responseSchema: adResponseSchema,
-              temperature: 0.7,
-            },
-          }),
-        },
-      );
-    } catch (e) {
-      console.error("Falha de rede ao chamar a API Gemini:", e);
-      return { ok: false, erro: "Não foi possível alcançar o serviço de IA. Tente novamente." };
+    // Modelos em ordem de preferência; em caso de sobrecarga (503) ou limite (429),
+    // tentamos o próximo antes de desistir.
+    const modelos = ["gemini-3.8-flash", "gemini-3-flash", "gemini-2.0-flash"];
+    let geminiRes: Response | undefined;
+    for (const modelo of modelos) {
+      try {
+        geminiRes = await fetch(
+          `https://generativelanguage.googleapis.com/v1beta/models/${modelo}:generateContent`,
+          {
+            method: "POST",
+            redirect: "manual",
+            headers: { "Content-Type": "application/json", "x-goog-api-key": apiKey },
+            body: JSON.stringify({
+              contents: [{ parts: [{ text: buildPrompt(data) }] }],
+              generationConfig: {
+                responseMimeType: "application/json",
+                responseSchema: adResponseSchema,
+                temperature: 0.7,
+              },
+            }),
+          },
+        );
+      } catch (e) {
+        console.error(`Falha de rede ao chamar a API Gemini (${modelo}):`, e);
+        continue;
+      }
+      if (geminiRes.ok) break;
+      const detail = await geminiRes.text();
+      console.error(`Erro da API Gemini (${modelo}, ${geminiRes.status}):`, detail);
+      if (geminiRes.status !== 503 && geminiRes.status !== 429 && geminiRes.status !== 404) {
+        return { ok: false, erro: "O serviço de IA retornou um erro. Tente novamente em instantes." };
+      }
     }
 
-    if (!geminiRes.ok) {
-      const detail = await geminiRes.text();
-      console.error(`Erro da API Gemini (${geminiRes.status}):`, detail);
-      return { ok: false, erro: "O serviço de IA retornou um erro. Tente novamente em instantes." };
+    if (!geminiRes || !geminiRes.ok) {
+      return { ok: false, erro: "O serviço de IA está com alta demanda. Tente novamente em instantes." };
     }
 
     try {
