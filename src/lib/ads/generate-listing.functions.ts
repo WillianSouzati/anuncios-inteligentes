@@ -69,11 +69,13 @@ export const generateListing = createServerFn({ method: "POST" })
       return { ok: false, erro: "O serviço de IA ainda não está configurado." };
     }
 
-    // Modelos em ordem de preferência; em caso de sobrecarga (503) ou limite (429),
-    // tentamos o próximo antes de desistir.
-    const modelos = ["gemini-3.8-flash", "gemini-3-flash", "gemini-2.0-flash"];
+    // O modelo pode responder 503 em picos de demanda; tentamos algumas vezes
+    // com pausa crescente antes de desistir.
+    const modelo = "gemini-3.8-flash";
+    const tentativas = 4;
     let geminiRes: Response | undefined;
-    for (const modelo of modelos) {
+    for (let i = 0; i < tentativas; i++) {
+      if (i > 0) await new Promise((r) => setTimeout(r, 2000 * i));
       try {
         geminiRes = await fetch(
           `https://generativelanguage.googleapis.com/v1beta/models/${modelo}:generateContent`,
@@ -92,19 +94,19 @@ export const generateListing = createServerFn({ method: "POST" })
           },
         );
       } catch (e) {
-        console.error(`Falha de rede ao chamar a API Gemini (${modelo}):`, e);
+        console.error(`Falha de rede ao chamar a API Gemini (tentativa ${i + 1}):`, e);
         continue;
       }
       if (geminiRes.ok) break;
       const detail = await geminiRes.text();
-      console.error(`Erro da API Gemini (${modelo}, ${geminiRes.status}):`, detail);
-      if (geminiRes.status !== 503 && geminiRes.status !== 429 && geminiRes.status !== 404) {
+      console.error(`Erro da API Gemini (tentativa ${i + 1}, ${geminiRes.status}):`, detail);
+      if (geminiRes.status !== 503 && geminiRes.status !== 429) {
         return { ok: false, erro: "O serviço de IA retornou um erro. Tente novamente em instantes." };
       }
     }
 
     if (!geminiRes || !geminiRes.ok) {
-      return { ok: false, erro: "O serviço de IA está com alta demanda. Tente novamente em instantes." };
+      return { ok: false, erro: "O serviço de IA está com alta demanda. Aguarde alguns segundos e clique em Gerar novamente." };
     }
 
     try {
