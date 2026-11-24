@@ -82,6 +82,7 @@ export const generateListing = createServerFn({ method: "POST" })
           {
             method: "POST",
             redirect: "manual",
+            signal: AbortSignal.timeout(60_000),
             headers: { "Content-Type": "application/json", "x-goog-api-key": apiKey },
             body: JSON.stringify({
               contents: [{ parts: [{ text: buildPrompt(data) }] }],
