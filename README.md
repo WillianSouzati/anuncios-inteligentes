@@ -1,4 +1,4 @@
-# Smart Listing AI
+# IA para Anúncios Inteligentes
 
 **Assistente inteligente para criação e melhoria de anúncios de produtos em marketplaces.**
 
@@ -8,7 +8,7 @@
 
 ## Sobre o projeto
 
-O Smart Listing AI é uma aplicação que utiliza inteligência artificial generativa para auxiliar vendedores na criação de anúncios de produtos.
+Uma aplicação que utiliza inteligência artificial generativa para auxiliar vendedores na criação de anúncios de produtos.
 
 A partir das informações fornecidas pelo usuário, a solução gera títulos, descrições, características e sugestões de melhoria para anúncios em marketplaces.
 
