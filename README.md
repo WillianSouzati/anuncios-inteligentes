@@ -2,7 +2,6 @@
 
 **Assistente inteligente para criação e melhoria de anúncios de produtos em marketplaces.**
 
-
 ## Sobre o projeto
 
 Uma aplicação que utiliza inteligência artificial generativa para auxiliar vendedores na criação de anúncios de produtos.
@@ -59,4 +58,4 @@ O projeto passou pelas etapas de concepção, definição de funcionalidades, de
 
 ## Autor
 
-Projeto idealizado e desenvolvido por **Willian Souza**, explorando aplicações práticas de inteligência artificial generativa, tecnologia e soluções digitais para o comércio eletrônico.
+Projeto idealizado e desenvolvido por **Willian Scher**, explorando aplicações práticas de inteligência artificial generativa, tecnologia e soluções digitais para o comércio eletrônico.
