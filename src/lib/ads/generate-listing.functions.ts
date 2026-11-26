@@ -71,7 +71,7 @@ export const generateListing = createServerFn({ method: "POST" })
 
     // O modelo pode responder 503 em picos de demanda; tentamos algumas vezes
     // com pausa crescente antes de desistir.
-    const modelo = "gemini-3.8-flash";
+    const modelo = "gemini-3.5-flash-lite";
     const tentativas = 4;
     let geminiRes: Response | undefined;
     for (let i = 0; i < tentativas; i++) {
