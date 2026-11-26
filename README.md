@@ -2,9 +2,6 @@
 
 **Assistente inteligente para criação e melhoria de anúncios de produtos em marketplaces.**
 
-🌐 [Acessar aplicação](https://anuncios-inteligentes.lovable.app/)
-
-💻 [Repositório GitHub](https://github.com/WillianSouzati/anuncios-inteligentes)
 
 ## Sobre o projeto
 
